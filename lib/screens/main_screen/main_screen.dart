@@ -9,7 +9,7 @@ class MainScreen extends StatelessWidget {
     'Clothing Logos',
     'Food Logos',
     'Bank Logos',
-    'TV Show Logos',
+    'TVShow Logos',
     'Team Logos',
     'Other Logos',
   ];
@@ -21,12 +21,11 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFE0E0E0),
       appBar: AppBar(
-
         backgroundColor: Colors.transparent,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Ethiopic Logo Quiz', style: TextStyle(fontWeight: FontWeight.w900),),
+            Text('Ethiopic Logo Quiz', style: TextStyle(fontWeight: FontWeight.w900)),
             CoinBalance(),
           ],
         ),
@@ -35,6 +34,3 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
-
-
-

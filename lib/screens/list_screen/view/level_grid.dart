@@ -1,12 +1,10 @@
-
-import 'package:ethiopic_logo_quiz/screens/list_screen/view/level_box.dart';
 import 'package:flutter/material.dart';
-
+import 'level_box.dart';
 
 class LevelGrid extends StatelessWidget {
-  const LevelGrid({
-    super.key,
-  });
+  final String category;
+
+  const LevelGrid({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +14,10 @@ class LevelGrid extends StatelessWidget {
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
       ),
-      itemCount: 10, // Number of items
+      itemCount: 1, // Number of items
       itemBuilder: (context, index) {
-        return LevelBox(index:index);
+        return LevelBox(index: index, category: category);
       },
     );
   }
 }
-

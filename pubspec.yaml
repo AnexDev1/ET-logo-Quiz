@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
   provider: ^6.1.2
 
 dev_dependencies:
@@ -21,3 +22,5 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/clothing/
+    - assets/images/food/

@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-
-import '../../list_screen/list_screen.dart';
-import 'game_list_row.dart';
+import '../../list_screen/view/level_grid.dart';
 
 class GameList extends StatelessWidget {
-  const GameList({
-    super.key,
-    required this.logoCategories,
-  });
-
   final List<String> logoCategories;
+
+  const GameList({super.key, required this.logoCategories});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top:10.0),
-      child: ListView.builder(
-        itemCount: logoCategories.length,
-        itemBuilder: (context, index) {
-          return GameListRow(logoCategories: logoCategories,index:index);
-        },
-      ),
+    return ListView.builder(
+      itemCount: logoCategories.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(logoCategories[index]),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LevelGrid(category: logoCategories[index]),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
-
