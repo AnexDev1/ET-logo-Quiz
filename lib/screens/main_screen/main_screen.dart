@@ -6,7 +6,7 @@ class MainScreen extends StatelessWidget {
   final List<String> logoCategories = [
     'Clothing Logos',
     'Food Logos',
-    'Bank Logos',
+    'Ethiopian Logos',
     'TVShow Logos',
     'Team Logos',
     'Other Logos',
