@@ -13,6 +13,19 @@ class LevelBox extends StatelessWidget {
     final String logoImagePath = 'assets/images/$categoryKey/logo_${index + 1}.png';
     final String answerLogoImagePath = 'assets/images/$categoryKey/logo_${index + 1}_ans.png';
 
+    // Map of categories to their respective lists of answers
+    final Map<String, List<String>> categoryAnswers = {
+      'clothing': ['adidas', 'levis', 'vans', 'chanel'],
+      'food': ['kfc', 'mcdonalds', 'burgerking', 'subway'],
+      'bank': ['chase', 'wellsfargo', 'citi', 'boa'],
+      'tvshow': ['friends', 'breakingbad', 'got', 'strangerthings'],
+      'team': ['lakers', 'warriors', 'yankees', 'dodgers'],
+      'other': ['apple', 'google', 'microsoft', 'amazon'],
+    };
+
+    // Get the correct list of answers based on the category
+    final List<String> answers = categoryAnswers[categoryKey] ?? [];
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -20,7 +33,7 @@ class LevelBox extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => LevelScreen(
               logoImagePath: logoImagePath,
-              answer: 'Answer',
+              answer: answers[index],
               answerLogoImagePath: answerLogoImagePath,
             ),
           ),
