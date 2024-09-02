@@ -36,18 +36,7 @@ class LevelBox extends StatelessWidget {
               answer: answers[index],
               answerLogoImagePath: answerLogoImagePath,
               onNextLevel: () {
-                // Navigate to the next level
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LevelScreen(
-                      logoImagePath: 'assets/images/$categoryKey/logo_${index + 2}.png',
-                      answer: answers[index + 1],
-                      answerLogoImagePath: 'assets/images/$categoryKey/logo_${index + 2}_ans.png',
-                      onNextLevel: () {},
-                    ),
-                  ),
-                );
+                _navigateToNextLevel(context, categoryKey, index + 1, answers);
               },
             ),
           ),
@@ -65,5 +54,26 @@ class LevelBox extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToNextLevel(BuildContext context, String categoryKey, int nextIndex, List<String> answers) {
+    if (nextIndex < answers.length) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LevelScreen(
+            logoImagePath: 'assets/images/$categoryKey/logo_${nextIndex + 1}.png',
+            answer: answers[nextIndex],
+            answerLogoImagePath: 'assets/images/$categoryKey/logo_${nextIndex + 1}_ans.png',
+            onNextLevel: () {
+              _navigateToNextLevel(context, categoryKey, nextIndex + 1, answers);
+            },
+          ),
+        ),
+      );
+    } else {
+      // Handle the case when there are no more levels
+      Navigator.pop(context);
+    }
   }
 }
