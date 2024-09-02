@@ -26,14 +26,14 @@ class LevelController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onLetterTap(String letter, BuildContext context) {
+  void onLetterTap(String letter, BuildContext context, VoidCallback onNextLevel) {
     for (int i = 0; i < inputLetters.length; i++) {
       if (inputLetters[i] == '') {
         inputLetters[i] = letter;
         break;
       }
     }
-    _checkAnswer(context);
+    _checkAnswer(context, onNextLevel);
     notifyListeners();
   }
 
@@ -42,9 +42,8 @@ class LevelController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _checkAnswer(context) {
+  void _checkAnswer(BuildContext context, VoidCallback onNextLevel) {
     if (inputLetters.join('') == answer.toUpperCase()) {
-      // Show success dialog or perform any other action
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -60,14 +59,27 @@ class LevelController extends ChangeNotifier {
           actions: [
             TextButton(
               onPressed: () {
+                _clearInputFields();
                 Navigator.of(context).pop();
-                // Navigate to the next level or perform any other action
               },
               child: const Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                _clearInputFields();
+                Navigator.of(context).pop();
+                onNextLevel();
+              },
+              child: const Text('Next'),
             ),
           ],
         ),
       );
     }
+  }
+
+  void _clearInputFields() {
+    inputLetters = List.filled(answer.length, '');
+    notifyListeners();
   }
 }

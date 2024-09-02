@@ -1,4 +1,3 @@
-// lib/screens/level_screen.dart
 import 'package:ethiopic_logo_quiz/controller/level_controller.dart';
 import 'package:ethiopic_logo_quiz/screens/level_screen/view/answer_button.dart';
 import 'package:ethiopic_logo_quiz/screens/level_screen/view/answer_field.dart';
@@ -10,12 +9,14 @@ class LevelScreen extends StatelessWidget {
   final String logoImagePath;
   final String answer;
   final String answerLogoImagePath;
+  final VoidCallback onNextLevel;
 
   const LevelScreen({
     super.key,
     required this.logoImagePath,
     required this.answer,
     required this.answerLogoImagePath,
+    required this.onNextLevel,
   });
 
   @override
@@ -39,7 +40,7 @@ class LevelScreen extends StatelessWidget {
                     children: List.generate(controller.answer.length, (index) {
                       return GestureDetector(
                         onTap: () => controller.onInputFieldTap(index),
-                        child: AnswerField(controller:controller,index:index),
+                        child: AnswerField(controller: controller, index: index),
                       );
                     }),
                   );
@@ -53,7 +54,7 @@ class LevelScreen extends StatelessWidget {
                     runSpacing: 8.0,
                     children: controller.availableLetters.map((letter) {
                       return GestureDetector(
-                        onTap: () => controller.onLetterTap(letter, context),
+                        onTap: () => controller.onLetterTap(letter, context, onNextLevel),
                         child: AnswerButton(letter),
                       );
                     }).toList(),
@@ -67,8 +68,3 @@ class LevelScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

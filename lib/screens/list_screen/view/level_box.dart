@@ -35,6 +35,20 @@ class LevelBox extends StatelessWidget {
               logoImagePath: logoImagePath,
               answer: answers[index],
               answerLogoImagePath: answerLogoImagePath,
+              onNextLevel: () {
+                // Navigate to the next level
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LevelScreen(
+                      logoImagePath: 'assets/images/$categoryKey/logo_${index + 2}.png',
+                      answer: answers[index + 1],
+                      answerLogoImagePath: 'assets/images/$categoryKey/logo_${index + 2}_ans.png',
+                      onNextLevel: () {},
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         );
