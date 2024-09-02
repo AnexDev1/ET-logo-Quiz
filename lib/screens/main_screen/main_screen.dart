@@ -1,6 +1,4 @@
-import 'package:ethiopic_logo_quiz/screens/list_screen/list_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../../widgets/coin_balance.dart';
 import 'view/game_list.dart';
 
@@ -12,6 +10,15 @@ class MainScreen extends StatelessWidget {
     'TVShow Logos',
     'Team Logos',
     'Other Logos',
+  ];
+
+  final List<String> svgPaths = [
+    'assets/images/adidas.svg',
+    'assets/images/kfc.svg',
+    'assets/images/bank.svg',
+    'assets/images/tv.svg',
+    'assets/images/ft.svg',
+    'assets/images/kfc.svg',
   ];
 
   MainScreen({super.key});
@@ -30,7 +37,7 @@ class MainScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: GameList(logoCategories: logoCategories),
+      body: GameList(logoCategories: logoCategories, svgPaths: svgPaths),
     );
   }
 }

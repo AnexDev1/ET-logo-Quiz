@@ -14,7 +14,7 @@ class LevelGrid extends StatelessWidget {
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
       ),
-      itemCount: 1, // Number of items
+      itemCount: 5, // Number of items
       itemBuilder: (context, index) {
         return LevelBox(index: index, category: category);
       },
