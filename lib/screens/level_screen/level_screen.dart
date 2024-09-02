@@ -24,13 +24,15 @@ class LevelScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => LevelController(answer: answer, answerLogoImagePath: answerLogoImagePath),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Level Screen'),
-        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.only(top:18.0),
+                child: Text('Levels', style: TextStyle(fontWeight: FontWeight.w900,fontSize: 20)),
+              ),
+              const SizedBox(height: 20),
               QuestionField(logoImagePath: logoImagePath),
               const SizedBox(height: 20),
               Consumer<LevelController>(

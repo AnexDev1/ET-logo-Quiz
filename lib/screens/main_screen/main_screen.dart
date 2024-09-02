@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../widgets/coin_balance.dart';
 import 'view/game_list.dart';
 
 class MainScreen extends StatelessWidget {
@@ -33,7 +32,6 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Ethiopic Logo Quiz', style: TextStyle(fontWeight: FontWeight.w900)),
-            CoinBalance(),
           ],
         ),
       ),
