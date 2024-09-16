@@ -1,6 +1,8 @@
 // lib/controllers/level_controller.dart
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/coin_balance_provider.dart';
 
 class LevelController extends ChangeNotifier {
   final String answer;
@@ -133,5 +135,20 @@ class LevelController extends ChangeNotifier {
     hasBeenRewarded = false;
     isIncorrect = false;
     notifyListeners();
+  }
+
+  bool getHint(BuildContext context) {
+    final coinBalance = context.read<CoinBalanceProvider>();
+    if (coinBalance.deductCoins(5)) {
+      int emptyIndex = inputLetters.indexOf('');
+      if (emptyIndex != -1) {
+        String correctLetter = answer[emptyIndex].toUpperCase();
+        inputLetters[emptyIndex] = correctLetter;
+        availableLetters.remove(correctLetter);
+        notifyListeners();
+        return true;
+      }
+    }
+    return false;
   }
 }

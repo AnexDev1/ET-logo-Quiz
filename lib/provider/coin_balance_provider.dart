@@ -10,6 +10,15 @@ class CoinBalanceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool deductCoins(int amount) {
+    if (_coins >= amount) {
+      _coins -= amount;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
   void resetCoins() {
     _coins = 0;
     notifyListeners();
