@@ -12,10 +12,15 @@ class LevelBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final answers = context.read<CategoryAnswersProvider>().getAnswers(category);
     final String categoryKey = category.split(' ')[0].toLowerCase();
-    final String logoImagePath = 'assets/images/$categoryKey/logo_${index + 1}.png';
-    final String answerLogoImagePath = 'assets/images/$categoryKey/logo_${index + 1}_ans.png';
+    final String logoImagePath =
+        'assets/images/$categoryKey/logo_${index + 1}.png';
+    final String answerLogoImagePath =
+        'assets/images/$categoryKey/logo_${index + 1}_ans.png';
+
+    // Retrieve the answers for the current category
+    final answers =
+        context.read<CategoryAnswersProvider>().getAnswers(category);
 
     return GestureDetector(
       onTap: () {
@@ -24,7 +29,7 @@ class LevelBox extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => LevelScreen(
               logoImagePath: logoImagePath,
-              answer: answers[index],
+              answer: answers[index], // Pass the correct answer
               answerLogoImagePath: answerLogoImagePath,
               onNextLevel: () {
                 _navigateToNextLevel(context, categoryKey, index + 1, answers);
@@ -34,30 +39,53 @@ class LevelBox extends StatelessWidget {
         );
       },
       child: Container(
+        margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8.0,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
-        child: Center(
-          child: Image.asset(
-            logoImagePath,
-            fit: BoxFit.cover,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Display the logo image
+              Image.asset(
+                logoImagePath,
+                fit: BoxFit.contain,
+                height: 120, // Fixed height for uniformity
+                width: double.infinity,
+              ),
+              // Removed the overlay with text
+            ],
           ),
         ),
       ),
     );
   }
 
-  void _navigateToNextLevel(BuildContext context, String categoryKey, int nextIndex, List<String> answers) {
+  void _navigateToNextLevel(BuildContext context, String categoryKey,
+      int nextIndex, List<String> answers) {
     if (nextIndex < answers.length) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => LevelScreen(
-            logoImagePath: 'assets/images/$categoryKey/logo_${nextIndex + 1}.png',
+            logoImagePath:
+                'assets/images/$categoryKey/logo_${nextIndex + 1}.png',
             answer: answers[nextIndex],
-            answerLogoImagePath: 'assets/images/$categoryKey/logo_${nextIndex + 1}_ans.png',
+            answerLogoImagePath:
+                'assets/images/$categoryKey/logo_${nextIndex + 1}_ans.png',
             onNextLevel: () {
-              _navigateToNextLevel(context, categoryKey, nextIndex + 1, answers);
+              _navigateToNextLevel(
+                  context, categoryKey, nextIndex + 1, answers);
             },
           ),
         ),
