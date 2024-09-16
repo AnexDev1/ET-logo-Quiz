@@ -9,6 +9,7 @@ class LevelController extends ChangeNotifier {
   List<String> inputLetters = [];
   List<String> availableLetters = [];
   bool isIncorrect = false;
+  bool hasBeenRewarded = false;
 
   LevelController({
     required this.answer,
@@ -70,7 +71,10 @@ class LevelController extends ChangeNotifier {
   void _checkAnswer(BuildContext context, VoidCallback onNextLevel) {
     if (inputLetters.join('').toUpperCase() == answer.toUpperCase()) {
       isIncorrect = false;
-      onCorrectAnswer();
+      if (!hasBeenRewarded) {
+        onCorrectAnswer();
+        hasBeenRewarded = true;
+      }
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -79,7 +83,7 @@ class LevelController extends ChangeNotifier {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('You have solved the puzzle!'),
-              const Text('You earned 25 coins!'),
+              if (!hasBeenRewarded) const Text('You earned 25 coins!'),
               const SizedBox(height: 20),
               Image.asset(answerLogoImagePath),
             ],
@@ -87,14 +91,12 @@ class LevelController extends ChangeNotifier {
           actions: [
             TextButton(
               onPressed: () {
-                _clearInputFields();
                 Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
             TextButton(
               onPressed: () {
-                _clearInputFields();
                 Navigator.of(context).pop();
                 onNextLevel();
               },
@@ -120,6 +122,16 @@ class LevelController extends ChangeNotifier {
   void _clearInputFields() {
     inputLetters = List.filled(answer.length, '');
     _generateAvailableLetters();
+    // Don't reset hasBeenRewarded here
+    notifyListeners();
+  }
+
+  // Add a method to reset the controller for a new level
+  void resetForNewLevel() {
+    inputLetters = List.filled(answer.length, '');
+    _generateAvailableLetters();
+    hasBeenRewarded = false;
+    isIncorrect = false;
     notifyListeners();
   }
 }

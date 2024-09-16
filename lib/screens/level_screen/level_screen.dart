@@ -30,64 +30,70 @@ class LevelScreen extends StatelessWidget {
           context.read<CoinBalanceProvider>().addCoins(25);
         },
       ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Consumer<CoinBalanceProvider>(
-            builder: (context, coinBalance, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Icon(Icons.monetization_on, color: Colors.yellow),
-                  const SizedBox(width: 4),
-                  Text('${coinBalance.coins}',
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              );
-            },
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 18.0),
-                child: Text('Levels',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
-              ),
-              const SizedBox(height: 20),
-              QuestionField(logoImagePath: logoImagePath),
-              const SizedBox(height: 20),
-              Consumer<LevelController>(
-                builder: (context, controller, child) {
+      child: Consumer<LevelController>(
+        builder: (context, controller, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Consumer<CoinBalanceProvider>(
+                builder: (context, coinBalance, child) {
                   return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(controller.answer.length, (index) {
-                      return AnswerField(controller: controller, index: index);
-                    }),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Icon(Icons.monetization_on, color: Colors.yellow),
+                      const SizedBox(width: 4),
+                      Text('${coinBalance.coins}',
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ],
                   );
                 },
               ),
-              const SizedBox(height: 20),
-              Consumer<LevelController>(
-                builder: (context, controller, child) {
-                  return Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: controller.availableLetters.map((letter) {
-                      return GestureDetector(
-                        onTap: () => controller.onLetterTap(
-                            letter, context, onNextLevel),
-                        child: AnswerButton(letter),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 18.0),
+                    child: Text('Levels',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 20)),
+                  ),
+                  const SizedBox(height: 20),
+                  QuestionField(logoImagePath: logoImagePath),
+                  const SizedBox(height: 20),
+                  Consumer<LevelController>(
+                    builder: (context, controller, child) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                            List.generate(controller.answer.length, (index) {
+                          return AnswerField(
+                              controller: controller, index: index);
+                        }),
                       );
-                    }).toList(),
-                  );
-                },
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Consumer<LevelController>(
+                    builder: (context, controller, child) {
+                      return Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: controller.availableLetters.map((letter) {
+                          return GestureDetector(
+                            onTap: () => controller.onLetterTap(
+                                letter, context, () => onNextLevel()),
+                            child: AnswerButton(letter),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
