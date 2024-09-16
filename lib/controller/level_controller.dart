@@ -20,35 +20,49 @@ class LevelController extends ChangeNotifier {
   }
 
   void _generateAvailableLetters() {
-    Set<String> lettersSet = answer.toUpperCase().split('').toSet();
-    Random random = Random();
-
-    while (lettersSet.length < answer.length + 5) {
-      lettersSet.add(String.fromCharCode(random.nextInt(26) + 65)); // A-Z
+    Map<String, int> letterCounts = {};
+    for (var letter in answer.toUpperCase().split('')) {
+      letterCounts[letter] = (letterCounts[letter] ?? 0) + 1;
     }
 
-    availableLetters = lettersSet.toList();
+    availableLetters = [];
+    letterCounts.forEach((letter, count) {
+      // Add the exact number of occurrences for each letter
+      availableLetters.addAll(List.filled(count, letter));
+    });
+
+    // Add some random letters
+    Random random = Random();
+    int extraLettersNeeded = answer.length + 5 - availableLetters.length;
+    for (int i = 0; i < extraLettersNeeded; i++) {
+      String randomLetter = String.fromCharCode(random.nextInt(26) + 65); // A-Z
+      availableLetters.add(randomLetter);
+    }
+
     availableLetters.shuffle();
     notifyListeners();
   }
 
   void onLetterTap(
       String letter, BuildContext context, VoidCallback onNextLevel) {
-    for (int i = 0; i < inputLetters.length; i++) {
-      if (inputLetters[i] == '') {
-        inputLetters[i] = letter;
-        break;
+    int emptyIndex = inputLetters.indexOf('');
+    if (emptyIndex != -1) {
+      inputLetters[emptyIndex] = letter;
+      // Remove only one occurrence of the letter from availableLetters
+      availableLetters.remove(letter);
+      if (inputLetters.every((letter) => letter != '')) {
+        _checkAnswer(context, onNextLevel);
       }
+      notifyListeners();
     }
-    if (inputLetters.every((letter) => letter != '')) {
-      _checkAnswer(context, onNextLevel);
-    }
-    notifyListeners();
   }
 
   void onInputFieldTap(int index) {
     if (inputLetters[index] != '') {
+      String letter = inputLetters[index];
       inputLetters[index] = '';
+      availableLetters.add(letter);
+      availableLetters.sort();
       notifyListeners();
     }
   }
@@ -56,7 +70,7 @@ class LevelController extends ChangeNotifier {
   void _checkAnswer(BuildContext context, VoidCallback onNextLevel) {
     if (inputLetters.join('').toUpperCase() == answer.toUpperCase()) {
       isIncorrect = false;
-      onCorrectAnswer(); // Call the callback to add coins
+      onCorrectAnswer();
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -105,6 +119,7 @@ class LevelController extends ChangeNotifier {
 
   void _clearInputFields() {
     inputLetters = List.filled(answer.length, '');
+    _generateAvailableLetters();
     notifyListeners();
   }
 }
