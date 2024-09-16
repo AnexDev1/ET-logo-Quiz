@@ -1,4 +1,6 @@
+import 'package:ethiopic_logo_quiz/provider/coin_balance_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'view/game_list.dart';
 
 class MainScreen extends StatelessWidget {
@@ -28,10 +30,23 @@ class MainScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFE0E0E0),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Ethiopic Logo Quiz', style: TextStyle(fontWeight: FontWeight.w900)),
+            const Text('Ethiopic Logo Quiz',
+                style: TextStyle(fontWeight: FontWeight.w900)),
+            Consumer<CoinBalanceProvider>(
+              builder: (context, coinBalance, child) {
+                return Row(
+                  children: [
+                    const Icon(Icons.monetization_on, color: Colors.yellow),
+                    const SizedBox(width: 4),
+                    Text('${coinBalance.coins}',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),

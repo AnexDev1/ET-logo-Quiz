@@ -1,5 +1,7 @@
 import 'package:ethiopic_logo_quiz/screens/main_screen/main_screen.dart';
+import 'package:ethiopic_logo_quiz/provider/coin_balance_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,9 +12,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => CoinBalanceProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MainScreen(),
+      ),
     );
   }
 }

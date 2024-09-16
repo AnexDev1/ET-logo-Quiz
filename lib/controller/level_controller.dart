@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 class LevelController extends ChangeNotifier {
   final String answer;
   final String answerLogoImagePath;
+  final VoidCallback onCorrectAnswer;
   List<String> inputLetters = [];
   List<String> availableLetters = [];
 
-  LevelController({required this.answer, required this.answerLogoImagePath}) {
+  LevelController({
+    required this.answer,
+    required this.answerLogoImagePath,
+    required this.onCorrectAnswer,
+  }) {
     inputLetters = List.filled(answer.length, '');
     _generateAvailableLetters();
   }
@@ -26,7 +31,8 @@ class LevelController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onLetterTap(String letter, BuildContext context, VoidCallback onNextLevel) {
+  void onLetterTap(
+      String letter, BuildContext context, VoidCallback onNextLevel) {
     for (int i = 0; i < inputLetters.length; i++) {
       if (inputLetters[i] == '') {
         inputLetters[i] = letter;
@@ -44,6 +50,7 @@ class LevelController extends ChangeNotifier {
 
   void _checkAnswer(BuildContext context, VoidCallback onNextLevel) {
     if (inputLetters.join('') == answer.toUpperCase()) {
+      onCorrectAnswer(); // Call the callback to add coins
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -52,6 +59,7 @@ class LevelController extends ChangeNotifier {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('You have solved the puzzle!'),
+              const Text('You earned 25 coins!'),
               const SizedBox(height: 20),
               Image.asset(answerLogoImagePath),
             ],
