@@ -8,6 +8,7 @@ class LevelController extends ChangeNotifier {
   final VoidCallback onCorrectAnswer;
   List<String> inputLetters = [];
   List<String> availableLetters = [];
+  bool isIncorrect = false;
 
   LevelController({
     required this.answer,
@@ -39,17 +40,22 @@ class LevelController extends ChangeNotifier {
         break;
       }
     }
-    _checkAnswer(context, onNextLevel);
+    if (inputLetters.every((letter) => letter != '')) {
+      _checkAnswer(context, onNextLevel);
+    }
     notifyListeners();
   }
 
   void onInputFieldTap(int index) {
-    inputLetters[index] = '';
-    notifyListeners();
+    if (inputLetters[index] != '') {
+      inputLetters[index] = '';
+      notifyListeners();
+    }
   }
 
   void _checkAnswer(BuildContext context, VoidCallback onNextLevel) {
-    if (inputLetters.join('') == answer.toUpperCase()) {
+    if (inputLetters.join('').toUpperCase() == answer.toUpperCase()) {
+      isIncorrect = false;
       onCorrectAnswer(); // Call the callback to add coins
       showDialog(
         context: context,
@@ -83,7 +89,18 @@ class LevelController extends ChangeNotifier {
           ],
         ),
       );
+    } else {
+      isIncorrect = true;
+      _shakeEffect();
     }
+    notifyListeners();
+  }
+
+  void _shakeEffect() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      isIncorrect = false;
+      notifyListeners();
+    });
   }
 
   void _clearInputFields() {

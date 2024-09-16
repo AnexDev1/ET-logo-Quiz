@@ -39,7 +39,8 @@ class LevelScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.monetization_on, color: Colors.yellow),
                   const SizedBox(width: 4),
-                  Text('${coinBalance.coins}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text('${coinBalance.coins}',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               );
             },
@@ -51,7 +52,9 @@ class LevelScreen extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.only(top: 18.0),
-                child: Text('Levels', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
+                child: Text('Levels',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
               ),
               const SizedBox(height: 20),
               QuestionField(logoImagePath: logoImagePath),
@@ -61,10 +64,7 @@ class LevelScreen extends StatelessWidget {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(controller.answer.length, (index) {
-                      return GestureDetector(
-                        onTap: () => controller.onInputFieldTap(index),
-                        child: AnswerField(controller: controller, index: index),
-                      );
+                      return AnswerField(controller: controller, index: index);
                     }),
                   );
                 },
@@ -77,7 +77,8 @@ class LevelScreen extends StatelessWidget {
                     runSpacing: 8.0,
                     children: controller.availableLetters.map((letter) {
                       return GestureDetector(
-                        onTap: () => controller.onLetterTap(letter, context, onNextLevel),
+                        onTap: () => controller.onLetterTap(
+                            letter, context, onNextLevel),
                         child: AnswerButton(letter),
                       );
                     }).toList(),
